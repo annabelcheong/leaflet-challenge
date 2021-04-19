@@ -45,8 +45,10 @@ d3.json(url, function(data) {
 
         // Give each feature a popup describing earthquake place and magnitude 
         function onEachFeature(feature, layer) {
-            layer.bindPopup("<h3>" + feature.properties.place + 
-                "</h3> <hr> <h2> Mag:" + feature.properties.mag + "</h2>");
+            layer.bindPopup("<h2>" + feature.properties.place + 
+                "</h2> <hr> <h3> Richter Scale: " +  feature.properties.mag + 
+                "</h3><p>" + new Date(feature.properties.time) + "</p>"
+                );
         };
 
         // Marker radius
@@ -87,7 +89,7 @@ d3.json(url, function(data) {
                 return L.circle(latlng, {
                     radius: markerRadius(earthquakeData.properties.mag),
                     color: markerColour(earthquakeData.properties.mag),
-                    fillOpacity: 0.8
+                    fillOpacity: 0.6
                 });
             },
             
@@ -122,9 +124,32 @@ d3.json(url, function(data) {
         });
 
 
-        L.control.layers(baseMaps, overlayMaps, {
-            collapsed: false
-        }).addTo(myMap);
+        // L.control.layers(baseMaps, overlayMaps, {
+        //     collapsed: false
+        // }).addTo(myMap);
+
+
+        //Add Legend to myMap
+        var legend = L.control({position:"bottomright"});
+
+        legend.onAdd = function (map) {
+
+            var div = L.DomUtil.create('div', 'info legend'),
+                mag = [0, 10, 20, 50, 100, 200, 500, 1000],
+                labels = [];
+
+            function getColor(d) {
+                return d > 5 ? '#800026' :
+                       d > 4 ? '#BD0026' :
+                       d > 3 ? '#E31A1C' :
+                       d > 2 ? '#FC4E2A' :
+                       d > 1 ? '#FD8D3C' :
+                               '#FFEDA0';
+            }
+
+        }
+
+
 
     };
 
