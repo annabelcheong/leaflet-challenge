@@ -39,119 +39,134 @@ d3.json(url, function(data) {
     console.log(data.features);
 });
 
-    // Define function createFeatures. 
-    // *This is used to run for each feature in the features array.
-    function createFeatures(earthquakeData) {
+// Define function createFeatures. 
+// *This is used to run for each feature in the features array.
+function createFeatures(earthquakeData) {
 
-        // Give each feature a popup describing earthquake place and magnitude 
-        function onEachFeature(feature, layer) {
-            layer.bindPopup("<h2>" + feature.properties.place + 
-                "</h2> <hr> <h3> Richter Scale: " +  feature.properties.mag + 
-                "</h3><p>" + new Date(feature.properties.time) + "</p>"
-                );
-        };
+    // Give each feature a popup describing earthquake place and magnitude 
+    function onEachFeature(feature, layer) {
+        layer.bindPopup("<h2>" + feature.properties.place + 
+            "</h2> <hr> <h3> Richter Scale: " +  feature.properties.mag + 
+            "</h3><p>" + new Date(feature.properties.time) + "</p>"
+            );
+    };
 
-        // Marker radius
-        function markerRadius(magnitude) {
-            return magnitude * 20000; // Change scale until appropriate for map and user experience.
+    // Marker radius
+    function markerRadius(magnitude) {
+        return magnitude * 20000; // Change scale until appropriate for map and user experience.
+    }
+
+    // Marker colours
+    function markerColour(magnitude) {
+        if (magnitude < 1) {
+            return "#00f704"
+        }
+        else if (magnitude < 2) {
+            return "#fefc2b"
+        }
+        else if (magnitude < 3) {
+            return "#efc91c"
+        }
+        else if (magnitude < 4) {
+            return "#ef971c"
+        }
+        else if (magnitude < 5) {
+            return "#ef7a1c"
+        }
+        // Magnitude > 5
+        else {
+            return "#ef7a1c"        
         }
 
-        // Marker colours
-        function markerColour(magnitude) {
-            if (magnitude < 1) {
-                return "#00f704"
-            }
-            else if (magnitude < 2) {
-                return "#fefc2b"
-            }
-            else if (magnitude < 3) {
-                return "#efc91c"
-            }
-            else if (magnitude < 4) {
-                return "#ef971c"
-            }
-            else if (magnitude < 5) {
-                return "#ef7a1c"
-            }
-            // Magnitude > 6
-            else {
-                return "#ef7a1c"        
-            }
+    }
 
-        }
-
-        // CREATE LAYER FOR MARKERS
-        // Create a GeoJSON layer containing the features array on the earthquakeData object
-        // Run the onEachFeature function once for each piece of data in the array
-        var earthquakes = L.geoJSON(earthquakeData,{
-            
-            pointToLayer: function(earthquakeData, latlng) {
-                return L.circle(latlng, {
-                    radius: markerRadius(earthquakeData.properties.mag),
-                    color: markerColour(earthquakeData.properties.mag),
-                    fillOpacity: 0.6
-                });
-            },
-            
-            "onEachFeature": onEachFeature
+    // CREATE LAYER FOR MARKERS
+    // Create a GeoJSON layer containing the features array on the earthquakeData object
+    // Run the onEachFeature function once for each piece of data in the array
+    var earthquakes = L.geoJSON(earthquakeData,{
         
-        });
+        pointToLayer: function(earthquakeData, latlng) {
+            return L.circle(latlng, {
+                radius: markerRadius(earthquakeData.properties.mag),
+                color: markerColour(earthquakeData.properties.mag),
+                fillOpacity: 0.6
+            });
+        },
+        
+        "onEachFeature": onEachFeature
+    
+    });
 
-        // Run function createMap 
-        createMap(earthquakes);
+    // Run function createMap 
+    createMap(earthquakes);
 
+};
+
+function createMap(earthquakes) {
+
+    var lightMap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+    attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
+    tileSize: 512,
+    maxZoom: 18,
+    zoomOffset: -1,
+    id: "mapbox/streets-v11",
+    accessToken: API_KEY
+    });
+
+    var overlayMaps = {
+        "Earthquakes": earthquakes
     };
 
-    function createMap(earthquakes) {
-
-        var lightMap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-        attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
-        tileSize: 512,
-        maxZoom: 18,
-        zoomOffset: -1,
-        id: "mapbox/streets-v11",
-        accessToken: API_KEY
-        });
-
-        var overlayMaps = {
-            "Earthquakes": earthquakes
-        };
-
-        var myMap = L.map("map-id", {
-            center: [40.7, -73.95],
-            zoom: 5,
-            layers: [lightMap, earthquakes]
-        });
+    var myMap = L.map("map-id", {
+        center: [40.7, -73.95],
+        zoom: 5,
+        layers: [lightMap, earthquakes]
+    });
 
 
-        // L.control.layers(baseMaps, overlayMaps, {
-        //     collapsed: false
-        // }).addTo(myMap);
+    // L.control.layers(baseMaps, overlayMaps, {
+    //     collapsed: false
+    // }).addTo(myMap);
 
 
-        //Add Legend to myMap
-        var legend = L.control({position:"bottomright"});
+    //Add legend 'template' to myMap
+    var legend = L.control({position:"bottomright"});
 
-        legend.onAdd = function (map) {
+    // Colours in the legend for the different richter scale categories
+    function getColor(grades) {
+        return  grades > 5 ? '#ef7a1c' :
+                grades > 4 ? '#ef7a1c' :
+                grades > 3 ? '#ef971c' :
+                grades > 2 ? '#efc91c' :
+                grades > 1 ? '#fefc2b' :
+                             '#00f704';
+        
+    }
 
-            var div = L.DomUtil.create('div', 'info legend'),
-                mag = [0, 10, 20, 50, 100, 200, 500, 1000],
-                labels = [];
+    // Add legend details
+    legend.onAdd = function (map) {
 
-            function getColor(d) {
-                return d > 5 ? '#800026' :
-                       d > 4 ? '#BD0026' :
-                       d > 3 ? '#E31A1C' :
-                       d > 2 ? '#FC4E2A' :
-                       d > 1 ? '#FD8D3C' :
-                               '#FFEDA0';
-            }
-
+        var div = L.DomUtil.create('div', 'info legend'),
+            magnitude = [0, 1, 2, 3, 4, 5],
+            labels = [];
+        
+        // loop through our density intervals and generate a label with a colored square for each interval
+        for (var i = 0; i < grades.length; i++) {
+            div.innerHTML +=
+                '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
+                grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
         }
 
+        return div;
 
 
     };
+    
+    legend.addTo(myMap);
+
+
+
+};
 
 
 
