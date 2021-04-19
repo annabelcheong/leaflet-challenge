@@ -10,21 +10,21 @@
 //// CREATE MAP ////
 
 // Creating map object
-var myMap = L.map("map-id", {
-    center: [40.7, -73.95],
-    zoom: 5,
-    // layers: [lightMap, earthquakes]
-});
+// var myMap = L.map("map-id", {
+//     center: [40.7, -73.95],
+//     zoom: 5,
+//     // layers: [lightMap, earthquakes]
+// });
 
-// Adding tile layer to the map
-L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
-attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
-tileSize: 512,
-maxZoom: 18,
-zoomOffset: -1,
-id: "mapbox/streets-v11",
-accessToken: API_KEY
-}).addTo(myMap);
+// // Adding tile layer to the map
+// lightMap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+// attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
+// tileSize: 512,
+// maxZoom: 18,
+// zoomOffset: -1,
+// id: "mapbox/streets-v11",
+// accessToken: API_KEY
+// }).addTo(myMap);
 
 ///////////////////////////////
 
@@ -37,6 +37,7 @@ var url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.ge
 d3.json(url, function(data) {
     createFeatures(data.features);
     console.log(data.features);
+});
 
     // Define function createFeatures. 
     // *This is used to run for each feature in the features array.
@@ -80,9 +81,9 @@ d3.json(url, function(data) {
         // CREATE LAYER FOR MARKERS
         // Create a GeoJSON layer containing the features array on the earthquakeData object
         // Run the onEachFeature function once for each piece of data in the array
-        L.geoJSON(earthquakeData,{
+        var earthquakes = L.geoJSON(earthquakeData,{
             
-            pointToLayer: function(feature, latlng) {
+            pointToLayer: function(earthquakeData, latlng) {
                 return L.circle(latlng, {
                     radius: markerRadius(earthquakeData.properties.mag),
                     color: markerColour(earthquakeData.properties.mag),
@@ -95,79 +96,37 @@ d3.json(url, function(data) {
         });
 
         // Run function createMap 
-        // createMap(earthquakes);
+        createMap(earthquakes);
 
     };
 
-});
+    function createMap(earthquakes) {
+
+        var lightMap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+        attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
+        tileSize: 512,
+        maxZoom: 18,
+        zoomOffset: -1,
+        id: "mapbox/streets-v11",
+        accessToken: API_KEY
+        });
+
+        var overlayMaps = {
+            "Earthquakes": earthquakes
+        };
+
+        var myMap = L.map("map-id", {
+            center: [40.7, -73.95],
+            zoom: 5,
+            layers: [lightMap, earthquakes]
+        });
 
 
+        L.control.layers(baseMaps, overlayMaps, {
+            collapsed: false
+        }).addTo(myMap);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// // geojson = L.circle(data,{
-
-// //     // Define what  property in the features to use. Use "mag" (which is the magnitude)
-// //     valueProperty: "mag";
-
-
-// // });
-
-
-// //       // Create a new marker cluster group
-// //   var markers = L.markerClusterGroup();
-
-// //   for (var i = 0; i < countries.length; i++) {
-
-// //     // Conditionals for countries points
-// //     var color = "";
-// //     if (countries[i].points > 200) {
-// //       color = "yellow";
-// //     }
-// //     else if (countries[i].points > 100) {
-// //       color = "blue";
-// //     }
-// //     else if (countries[i].points > 90) {
-// //       color = "green";
-// //     }
-// //     else {
-// //       color = "red";
-// //     }
-  
-// //     // Add circles to map
-// //     L.circle(countries[i].location, {
-// //       fillOpacity: 0.75,
-// //       color: "white",
-// //       fillColor: color,
-// //       // Adjust radius
-// //       radius: countries[i].points * 1500
-// //     }).bindPopup("<h1>" + countries[i].name + "</h1> <hr> <h3>Points: " + countries[i].points + "</h3>").addTo(myMap);
-// //   }
-
-
-
-
-
-
-
+    };
 
 
 
