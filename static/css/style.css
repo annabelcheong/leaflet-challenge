@@ -5,3 +5,19 @@ body,
   padding: 0;
   margin: 0;
 }
+
+.legend {
+    line-height: 18px;
+    color: #555;
+    background: rgb(253, 253, 253);
+    padding-right: 8px;
+    opacity: 0.9;
+}
+
+.legend i {
+    width: 18px;
+    height: 18px;
+    float: left;
+    margin-right: 8px;
+    opacity: 0.9;
+}

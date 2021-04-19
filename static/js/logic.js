@@ -58,24 +58,29 @@ function createFeatures(earthquakeData) {
 
     // Marker colours
     function markerColour(magnitude) {
+        // Magnitude 0 to 1
         if (magnitude < 1) {
-            return "#00f704"
+            return "#2dc937"
         }
+        // Magnitude 1 to 2
         else if (magnitude < 2) {
+            return "#99c140"
+        }
+        // Magnitude 2 to 3
+        else if (magnitude < 3) {
             return "#fefc2b"
         }
-        else if (magnitude < 3) {
-            return "#efc91c"
-        }
+        // Magnitude 3 to 4
         else if (magnitude < 4) {
-            return "#ef971c"
+            return "#e7b416"
         }
+        // Magnitude 4 to 5
         else if (magnitude < 5) {
-            return "#ef7a1c"
+            return "#db7b2b"
         }
         // Magnitude > 5
         else {
-            return "#ef7a1c"        
+            return "#cc3232"        
         }
 
     }
@@ -134,13 +139,12 @@ function createMap(earthquakes) {
 
     // Colours in the legend for the different richter scale categories
     function getColor(grades) {
-        return  grades > 5 ? '#ef7a1c' :
-                grades > 4 ? '#ef7a1c' :
-                grades > 3 ? '#ef971c' :
-                grades > 2 ? '#efc91c' :
-                grades > 1 ? '#fefc2b' :
-                             '#00f704';
-        
+        return  grades > 5 ? '#cc3232' :
+                grades > 4 ? '#db7b2b' :
+                grades > 3 ? '#e7b416' :
+                grades > 2 ? '#fefc2b' :
+                grades > 1 ? '#99c140' :
+                             '#2dc937';
     }
 
     // Add legend details
