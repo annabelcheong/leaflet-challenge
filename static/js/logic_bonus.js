@@ -100,12 +100,22 @@ function createMap(earthquakes) {
     accessToken: API_KEY
     });
 
+    // var overlayMaps = {
+    //     "Earthquakes": earthquakes
+    // };
+
     // Create map with 2 layers: lightMap and earthquakes
     var myMap = L.map("map-id", {
         center: [40.7, -73.95],
         zoom: 5,
         layers: [lightMap, earthquakes]
     });
+
+
+    // L.control.layers(baseMaps, overlayMaps, {
+    //     collapsed: false
+    // }).addTo(myMap);
+
 
     //Add legend 'template' to myMap
     var legend = L.control({position:"bottomright"});
@@ -124,7 +134,8 @@ function createMap(earthquakes) {
     legend.onAdd = function () {
 
         var div = L.DomUtil.create('div', 'info legend'),
-            grades = [0, 1, 2, 3, 4, 5] 
+            grades = [0, 1, 2, 3, 4, 5] //,
+            // labels = [];
         
         // loop through our density intervals and generate a label with a colored square for each interval
         for (var i = 0; i < grades.length; i++) {
