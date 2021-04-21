@@ -90,31 +90,62 @@ function createFeatures(earthquakeData) {
 // Define function createMap.
 function createMap(earthquakes) {
 
-    // Base layer of map 
-    var lightMap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+    ////////////////////////////
+    //// Base layer of map 
+    // -- STYLES -- 
+    ////////////////////////////
+    // Style 1: Mapbox Outdoors
+    var outdoorsMap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
     tileSize: 512,
     maxZoom: 18,
     zoomOffset: -1,
-    id: "mapbox/streets-v11",
+    id: "mapbox/outdoors-v11",
     accessToken: API_KEY
     });
 
-    // var overlayMaps = {
-    //     "Earthquakes": earthquakes
-    // };
+    // Style 2: Mapbox Satellite
+    var satelliteMap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+        attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
+        tileSize: 512,
+        maxZoom: 18,
+        zoomOffset: -1,
+        id: "mapbox/satellite-v9", 
+        accessToken: API_KEY
+        });
+
+    // Style 3: Mapbox Greyscale
+    var greyscaleMap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
+        attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
+        tileSize: 512,
+        maxZoom: 18,
+        zoomOffset: -1,
+        id: "mapbox/light-v9", 
+        accessToken: API_KEY
+        });
+    
+    ///////////////////////////////////////
+    var baseMaps = {
+        "Outdoors": outdoorsMap,
+        "Satellite": satelliteMap,
+        "Greyscale": greyscaleMap
+    };
+
+    var overlayMaps = {
+        "Earthquakes": earthquakes
+    };
 
     // Create map with 2 layers: lightMap and earthquakes
     var myMap = L.map("map-id", {
         center: [40.7, -73.95],
         zoom: 5,
-        layers: [lightMap, earthquakes]
+        layers: [greyscaleMap, earthquakes]
     });
 
 
-    // L.control.layers(baseMaps, overlayMaps, {
-    //     collapsed: false
-    // }).addTo(myMap);
+    L.control.layers(baseMaps, overlayMaps, {
+        collapsed: false
+    }).addTo(myMap);
 
 
     //Add legend 'template' to myMap
