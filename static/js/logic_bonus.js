@@ -125,6 +125,7 @@ function createMap(earthquakes) {
         });
     
     ///////////////////////////////////////
+
     var baseMaps = {
         "Outdoors": outdoorsMap,
         "Satellite": satelliteMap,
@@ -135,7 +136,8 @@ function createMap(earthquakes) {
         "Earthquakes": earthquakes
     };
 
-    // Create map with 2 layers: lightMap and earthquakes
+    // Create map with 2 layers from baseMaps and overlayMaps: 
+    // Default types are, baseMap: greyscaleMap, overlayMaps: earthquakes
     var myMap = L.map("map-id", {
         center: [40.7, -73.95],
         zoom: 5,
