@@ -18,6 +18,12 @@ d3.json(url, function(data) {
     console.log(data.features);
 });
 
+
+
+
+
+
+
 ////////////////////////////////////////////////////////
 
 // Define function createFeatures. 
@@ -82,10 +88,12 @@ function createFeatures(earthquakeData) {
     
     });
 
+
     // Run function createMap 
     createMap(earthquakes);
 
 };
+
 
 // Define function createMap.
 function createMap(earthquakes) {
@@ -125,6 +133,27 @@ function createMap(earthquakes) {
         });
     
     ///////////////////////////////////////
+    
+    //// FAULTLINE LAYER ////
+
+    // Create a new layer stored in variable 'faultlines'
+    // *This will later be stored into overlayMaps as one of the variable options.
+    var faultlines = new L.LayerGroup();
+
+    // Techtonic Plate Data
+    // Perform call from github website of the techtonic plate coordinates
+    var url1 = "https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json"
+
+    d3.json(url1, function(faultlineData) {
+        console.log(faultlineData.features);
+        L.geoJSON(faultlineData, {
+            color: "orange",
+            weight: 2
+        })
+        .addTo(faultlines);
+    });
+
+    ///////////////////////////////////////
 
     var baseMaps = {
         "Outdoors": outdoorsMap,
@@ -133,7 +162,8 @@ function createMap(earthquakes) {
     };
 
     var overlayMaps = {
-        "Earthquakes": earthquakes
+        "Earthquakes": earthquakes,
+        "Faultlines": faultlines
     };
 
     // Create map with 2 layers from baseMaps and overlayMaps: 
@@ -141,7 +171,7 @@ function createMap(earthquakes) {
     var myMap = L.map("map-id", {
         center: [40.7, -73.95],
         zoom: 5,
-        layers: [greyscaleMap, earthquakes]
+        layers: [greyscaleMap, earthquakes, faultlines]
     });
 
 
@@ -162,6 +192,10 @@ function createMap(earthquakes) {
                 grades > 1 ? '#99c140' :
                              '#2dc937';
     }
+
+    ///////////////////////////////////////
+    
+    //// LEGEND ////
 
     // Add legend details
     legend.onAdd = function () {
