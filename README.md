@@ -13,7 +13,7 @@ This repository contains:
         - style.css
     
     ## FOLDER: js
-        - config.js
+        - config.js (contained in the .gitignore file)
             - This is the config javascript file that contains the mapbox API key.
         - logic.js
             - This file contains the code to map the layers of markers and map from Leaflet.
