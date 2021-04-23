@@ -18,12 +18,6 @@ d3.json(url, function(data) {
     console.log(data.features);
 });
 
-
-
-
-
-
-
 ////////////////////////////////////////////////////////
 
 // Define function createFeatures. 
@@ -47,7 +41,7 @@ function createFeatures(earthquakeData) {
     function markerColour(magnitude) {
         // Magnitude 0 to 1
         if (magnitude < 1) {
-            return "#2dc937"
+            return "#2dc937" 
         }
         // Magnitude 1 to 2
         else if (magnitude < 2) {
@@ -74,7 +68,7 @@ function createFeatures(earthquakeData) {
 
     // Create a GeoJSON layer containing the features array on the earthquakeData object
     // Run the onEachFeature function once for each piece of data in the array
-    var earthquakes = L.geoJSON(earthquakeData,{
+    var earthquakes = L.geoJSON(earthquakeData, {
         
         pointToLayer: function(earthquakeData, latlng) {
             return L.circle(latlng, {
@@ -99,9 +93,10 @@ function createFeatures(earthquakeData) {
 function createMap(earthquakes) {
 
     ////////////////////////////
-    //// Base layer of map 
-    // -- STYLES -- 
+    //// Base layer of map ////
+    //// -- STYLES -- ////
     ////////////////////////////
+
     // Style 1: Mapbox Outdoors
     var outdoorsMap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
     attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>",
@@ -132,9 +127,9 @@ function createMap(earthquakes) {
         accessToken: API_KEY
         });
     
-    ///////////////////////////////////////
-    
+    ////////////////////////////
     //// FAULTLINE LAYER ////
+    ////////////////////////////
 
     // Create a new layer stored in variable 'faultlines'
     // *This will later be stored into overlayMaps as one of the variable options.
@@ -153,6 +148,10 @@ function createMap(earthquakes) {
         .addTo(faultlines);
     });
 
+    ///////////////////////////////////////
+    // BASEMAPS and OVERLAYMAPS 
+    // - BASEMAPS: COMBINE ALL STYLES TO 1 DICTIONARY, 
+    // - OVERLAYMAPS: COMBINE ALL TYPES TO 1 DICTIONARY
     ///////////////////////////////////////
 
     var baseMaps = {
@@ -194,15 +193,14 @@ function createMap(earthquakes) {
     }
 
     ///////////////////////////////////////
-    
     //// LEGEND ////
+    ///////////////////////////////////////
 
     // Add legend details
     legend.onAdd = function () {
 
         var div = L.DomUtil.create('div', 'info legend'),
-            grades = [0, 1, 2, 3, 4, 5] //,
-            // labels = [];
+            grades = [0, 1, 2, 3, 4, 5];
         
         // loop through our density intervals and generate a label with a colored square for each interval
         for (var i = 0; i < grades.length; i++) {
