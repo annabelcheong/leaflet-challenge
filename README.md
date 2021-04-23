@@ -1,7 +1,6 @@
 # leaflet-challenge
 week 17 homework
 
-To view the D3 (Health Statistics) deployed page, visit https://annabelcheong.github.io/leaflet-challenge/
 ******************************
 This repository contains: 
 
