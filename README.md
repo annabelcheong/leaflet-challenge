@@ -4,7 +4,7 @@ week 17 homework
 ## INSTRUCTIONS
 
 # 1. 
-Within the js folder, you will need to create a config.js file. (The config.js file is in the list of .gitignore already.)
+Within the js folder, you will need to create a config.js file within the js folder. (The config.js file is in the list of .gitignore already.)
 
 # 2. 
 In the config.js file, store your mapbox API_KEY. 
