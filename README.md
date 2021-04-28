@@ -1,11 +1,26 @@
 # leaflet-challenge
 week 17 homework
 
+## INSTRUCTIONS
+
+# 1. 
+Within the js folder, you will need to create a config.js file. (The config.js file is in the list of .gitignore already.)
+
+# 2. 
+In the config.js file, store your mapbox API_KEY. 
+For assessors from the Bootcamp, I will provide you with my API_key as part of the submission.
+
+// API key
+const API_KEY = "xxxx Add mapbox API_key here xxxx";
+
+# 3. 
+Use live server to run the page. 
+
 ******************************
 This repository contains: 
 
 # index.html 
-- This is the deployed page
+- This page references and enables the js files to run. 
 
 # FOLDER: static
 
