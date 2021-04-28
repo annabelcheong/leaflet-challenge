@@ -8,7 +8,7 @@ Within the js folder, you will need to create a config.js file. (The config.js f
 
 # 2. 
 In the config.js file, store your mapbox API_KEY. 
-For assessors from the Bootcamp, I will provide you with my API_key as part of the submission.
+For assessors from the Bootcamp, I will provide you with my API_KEY as part of the homework submission.
 
 // API key
 const API_KEY = "xxxx Add mapbox API_key here xxxx";
