@@ -21,6 +21,7 @@ This repository contains:
 
 # index.html 
 - This page references and enables the js files to run. 
+* Note: You will need to use the live server add on to run the page locally on your computer. 
 
 # FOLDER: static
 
